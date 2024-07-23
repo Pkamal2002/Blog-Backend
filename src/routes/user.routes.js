@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { registerUser } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
-import { validateRegisterInput } from "../middlewares/userValidator.middleware.js";
+import { validateRegisterInput } from "../helper/userValidator.js";
 import { handleValidationErrors } from "../middlewares/validation.middleware.js";
 
 const router = Router();
