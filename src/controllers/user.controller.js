@@ -3,6 +3,7 @@ import asyncHandler from "../utils/asyncHandler.js";
 import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import ApiResponse from "../utils/ApiResponse.js";
+import sendEmail from "../utils/mailer.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, fullname, password } = req.body;
@@ -31,15 +32,23 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Avatar file is required");
   }
 
+  const otp = Math.floor(100000 + Math.random() * 900000);
+
   const user = await User.create({
     username,
     email,
     fullname,
     password,
     avatar: avatar.url,
-    otp: Math.floor(100000 + Math.random() * 900000),
+    otp,
     isVerified: false,
   });
+
+  await sendEmail(
+    user.email,
+    "Verify your account",
+    `Your OTP for account verification is ${otp}`
+  );
 
   const createdUser = await User.findById(user._id).select(
     "-password  -refreshToken"
@@ -54,4 +63,45 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "User registered successfully"));
 });
 
-export { registerUser };
+const sendOtp = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  user.otp = otp;
+  await user.save();
+
+  await sendEmail(
+    user.email,
+    "Verify your account",
+    `Your OTP for account verification is ${otp}`
+  );
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, null, "OTP sent successfully"));
+});
+
+const verifyUser = asyncHandler(async (req, res) => {
+  const { otp } = req.body;
+
+  const user = await User.findOne({ otp: Number(otp) });
+  console.log(user);
+  if (!user) {
+    throw new ApiError(400, "Invalid OTP or email");
+  }
+
+  user.isVerified = true;
+  user.otp = null;
+  await user.save();
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, null, "User verified successfully"));
+});
+
+export { registerUser, sendOtp, verifyUser };

@@ -34,9 +34,7 @@ const userSchema = new Schema(
     },
     otp: {
       type: Number,
-      required: true,
-      trim: true,
-      unique: true,
+      index: true
     },
     isVerified: {
       type: Boolean,
