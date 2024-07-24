@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
-import { blogCount, getAllBlogs, getAllLoginUsersBlogs, submitBlog } from "../controllers/blog.controller.js";
+import { blogCount, getAllBlogs, getAllLoginUsersBlogs, getSingleBlog, submitBlog } from "../controllers/blog.controller.js";
 
 
 
@@ -22,6 +22,9 @@ router.route("/submitBlog").post(
 
   router.route("/blogCount").post(verifyJWT ,blogCount);
   router.route("/getAllBlogs").get(getAllBlogs);
+  router.route("/:blogId").get(getSingleBlog);
+
+
   router.route("/getAllLoginUsersBlogs").get(verifyJWT,getAllLoginUsersBlogs)
 
 

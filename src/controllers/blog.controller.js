@@ -106,4 +106,22 @@ const getAllLoginUsersBlogs = asyncHandler(async (req, res) => {
   }
 });
 
-export { submitBlog, blogCount, getAllBlogs, getAllLoginUsersBlogs };
+// Get Single Blog....
+
+const getSingleBlog = asyncHandler(async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.blogId).exec();
+
+    if (!blog) {
+      throw new ApiError(404, "Blog not found");
+    }
+
+    return res
+     .status(200)
+     .json(new ApiResponse(200, blog, "Blog fetched successfully"));
+  } catch (error) {
+    throw new ApiError(500, "Failed to fetch blog");
+  }
+});
+
+export { submitBlog, blogCount, getAllBlogs, getAllLoginUsersBlogs, getSingleBlog };
