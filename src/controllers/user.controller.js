@@ -25,11 +25,14 @@ const generateAccessAndRefreshToken = async (userId) => {
 
 //////////////////////////////////////////////////
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, fullname, password } = req.body;
+  const { username, email, fullname, password, confirmPassword } = req.body;
 
   // Validate input data
-  if (!username || !email || !fullname || !password) {
+  if (!username || !email || !fullname || !password || !confirmPassword) {
     throw new ApiError(400, "All Fields required");
+  }
+  if (password!== confirmPassword) {
+    throw new ApiError(400, "Passwords do not match");
   }
 
   const existedUser = await User.findOne({
