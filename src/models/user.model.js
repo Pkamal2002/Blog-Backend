@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import  Jwt  from "jsonwebtoken";
-import bcrypt from "bcrypt"
+import Jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 const userSchema = new Schema(
   {
@@ -34,7 +34,7 @@ const userSchema = new Schema(
     },
     otp: {
       type: Number,
-      index: true
+      index: true,
     },
     isVerified: {
       type: Boolean,
@@ -85,4 +85,4 @@ userSchema.methods.generateRefreshToken = function () {
   );
 };
 
-export  const User =mongoose.model("User",userSchema)
+export const User = mongoose.model("User", userSchema);
