@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { registerUser, sendOtp, verifyUser } from "../controllers/user.controller.js";
+import { loginUser, logoutUser, registerUser, sendOtp, verifyUser } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { validateRegisterInput } from "../helper/userValidator.js";
 import { handleValidationErrors } from "../middlewares/validation.middleware.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -17,5 +18,11 @@ router.route("/register").post(
 
 router.route("/send-otp").post(sendOtp);
 router.route("/verify").post(verifyUser);
+
+router.route("/login").post(loginUser)
+
+///secured routes....
+
+router.route("/logout").post(verifyJWT, logoutUser)
 
 export default router;
