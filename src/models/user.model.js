@@ -23,7 +23,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       trim: true,
-      index: true,
+
     },
     avatar: {
       type: String,
@@ -34,7 +34,6 @@ const userSchema = new Schema(
     },
     otp: {
       type: Number,
-      index: true,
     },
     isVerified: {
       type: Boolean,
