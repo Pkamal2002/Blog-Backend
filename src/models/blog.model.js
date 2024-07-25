@@ -29,6 +29,12 @@ const blogSchema = new Schema(
             ref: "User",
             required: true,
 
+        },
+        writterAvatar:{
+            type: mongoose.Schema.Types.String,
+            ref: "User",
+            required: true,
+
         }
     },
     { timestamps: true }

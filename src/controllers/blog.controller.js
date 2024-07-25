@@ -31,6 +31,7 @@ const submitBlog = asyncHandler(async (req, res) => {
     image: image.url,
     userId: req.user._id,
     writter: req.user.fullname,
+    writterAvatar: req.user.avatar
   });
 
   const createdBlog = await Blog.findById(blog._id);
