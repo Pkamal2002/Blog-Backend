@@ -117,7 +117,6 @@ const verifyUser = asyncHandler(async (req, res) => {
   }
 
   user.isVerified = true;
-  user.otp = null;
   await user.save();
 
   return res
