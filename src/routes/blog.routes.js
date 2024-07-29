@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
-import { blogCount, getAllBlogs, getAllLoginUsersBlogs, getSingleBlog, submitBlog } from "../controllers/blog.controller.js";
+import { blogCount, deleteBlog, getAllBlogs, getAllLoginUsersBlogs, getSingleBlog, submitBlog, updateBlog } from "../controllers/blog.controller.js";
 
 
 
@@ -26,7 +26,12 @@ router.route("/submitBlog").post(
 
 
   router.route("/getAllLoginUsersBlogs").get(verifyJWT,getAllLoginUsersBlogs)
+// Add the DELETE route here
+router.route("/:blogId").delete(verifyJWT, deleteBlog);
 
+
+// Add the PUT route here
+router.route("/:blogId").put(verifyJWT, updateBlog);
 
 
 

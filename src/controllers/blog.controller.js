@@ -126,4 +126,44 @@ const getSingleBlog = asyncHandler(async (req, res) => {
   }
 });
 
-export { submitBlog, blogCount, getAllBlogs, getAllLoginUsersBlogs, getSingleBlog };
+// Delete blogs...
+
+const deleteBlog = asyncHandler(async(req,res)=>{
+  try {
+    const blog = await Blog.findById(req.params.blogId).exec();
+    if (!blog) {
+      throw new ApiError(404, "Blog not found");
+      console.log(blog)
+    }
+    if (blog.userId.toString()!== req.user._id.toString()) {
+      throw new ApiError(403, "You are not authorized to delete this blog");
+    }
+    await blog.deleteOne();
+    return res
+     .status(200)
+     .json(new ApiResponse("Blog deleted successfully", 200));
+     } catch (error) {
+       throw new ApiError(500, "Failed to delete blog");
+     }
+})
+
+// Update blog...
+
+const updateBlog = asyncHandler(async(req,res)=>{
+  try {
+    const blog = await Blog.findByIdAndUpdate(req.params.blogId, req.body, {new: true, runValidators: true}).exec();
+    if (!blog) {
+      throw new ApiError(404, "Blog not found");
+    }
+    if (blog.userId.toString()!== req.user._id.toString()) {
+      throw new ApiError(403, "You are not authorized to update this blog");
+    }
+    return res
+     .status(200)
+     .json(new ApiResponse("Blog updated successfully", 200, blog));
+     } catch (error) {
+       throw new ApiError(500, "Failed to update blog");
+     }
+})
+
+export { submitBlog, blogCount, getAllBlogs, getAllLoginUsersBlogs, getSingleBlog,deleteBlog, updateBlog };
