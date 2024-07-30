@@ -98,7 +98,8 @@ const getAllBlogs = asyncHandler(async (req, res) => {
 
 const getAllLoginUsersBlogs = asyncHandler(async (req, res) => {
   try {
-    const blogs = await Blog.find({ user: req.user.id }).sort({ createdAt: -1 }).exec();
+    const userId = req.user._id; 
+    const blogs = await Blog.find({ userId })
 
     return res
      .status(200)
@@ -125,6 +126,8 @@ const getSingleBlog = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Failed to fetch blog");
   }
 });
+
+
 
 // Delete blogs...
 
@@ -166,4 +169,4 @@ const updateBlog = asyncHandler(async(req,res)=>{
      }
 })
 
-export { submitBlog, blogCount, getAllBlogs, getAllLoginUsersBlogs, getSingleBlog,deleteBlog, updateBlog };
+export { submitBlog, blogCount, getAllBlogs, getAllLoginUsersBlogs, getSingleBlog,deleteBlog, updateBlog, };

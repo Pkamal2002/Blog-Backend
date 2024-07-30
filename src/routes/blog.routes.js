@@ -25,7 +25,7 @@ router.route("/submitBlog").post(
   router.route("/:blogId").get(getSingleBlog);
 
 
-  router.route("/getAllLoginUsersBlogs").get(verifyJWT,getAllLoginUsersBlogs)
+  router.route("/getAllLoginUsersBlogs").post(verifyJWT,getAllLoginUsersBlogs)
 // Add the DELETE route here
 router.route("/:blogId").delete(verifyJWT, deleteBlog);
 
